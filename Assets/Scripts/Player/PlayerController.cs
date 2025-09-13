@@ -80,8 +80,6 @@ public class PlayerController : MonoBehaviour
         //Limiting our speed
         if(velocity.magnitude < curSpeed)
             rb.AddForce(moveDir.normalized * curSpeed * 10f * activeMultiplier, ForceMode.Force);
-
-        Debug.Log(moveDir);
     }
 
     private void getInput(){
