@@ -65,6 +65,7 @@ public class WeaponController : MonoBehaviour
 
         if(isReloading){
             bool reloadFinished = (Time.time > startedReloadAt + reloadTime);
+            //stop reloading
             if(reloadFinished){
                 isReloading = false;
                 clip = maxClip;

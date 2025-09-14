@@ -69,10 +69,10 @@ public class PlayerController : MonoBehaviour
             
         }
         else{
-            //Change movement when in the air
+            //Change movement speed when in the air
             rb.linearDamping = airDrag;
             activeMultiplier = airMultiplier;
-            rb.AddForce(-transform.up*gravityForce, ForceMode.Force);
+            rb.AddForce(-transform.up*gravityForce, ForceMode.Force); //artificial gravity so we arent "floaty"
         }
         Vector3 velocity = rb.linearVelocity;
         velocity.y = 0;
