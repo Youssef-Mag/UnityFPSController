@@ -92,8 +92,8 @@ public class WeaponController : MonoBehaviour
             Target target = hit.transform.gameObject.GetComponent<Target>();
             if(target == null)
                 return;
-                
-            bool targetHit = target.hit();
+
+            bool targetHit = target.hit(); //if hit and not already down
             if(targetHit) {
                 targetsHit += 1;
                 targetsHitText.text = $"Targets Hit: {targetsHit.ToString()}";

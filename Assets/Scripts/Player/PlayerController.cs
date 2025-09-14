@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
             crouched = true;
             playerObj.GetComponent<CapsuleCollider>().height = crouchHeight;
 
-            //to prevent flying by spamming crouch
+            //reset to pre-crouch position
             if(grounded) rb.position = new Vector3(rb.position.x, rb.position.y - (standHeight- crouchHeight)/2 , rb.position.z);
             playerHeight = crouchHeight;
 
