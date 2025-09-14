@@ -1,20 +1,28 @@
 using UnityEngine;
+using TMPro;
 
 public class WeaponController : MonoBehaviour
 {
     public GameObject camera;
+    public GameObject reloadingUI;
     [Header("Weapon Info")]
     public int maxClip;
     public int clip;
     public float fireRate;
     public float reloadTime;
     public float range;
+    public TMP_Text clipText;
 
     [Header("Audio")]
     public AudioSource audioSource;
 
+    [Header("Score Tracking")]
+    public int targetsHit;
+    public TMP_Text targetsHitText;
+
     //internal 
     bool isReloading = false;
+    bool forceReload = false;
     float startedReloadAt;
     float lastShot;
 
@@ -22,6 +30,7 @@ public class WeaponController : MonoBehaviour
     void Start()
     {
         clip = maxClip;
+        clipText.text = $"Bullets Left:{clip.ToString()}";
 
     }
 
@@ -42,8 +51,11 @@ public class WeaponController : MonoBehaviour
         if(shooting && canShoot){
             lastShot = Time.time;
             clip -= 1;
+            clipText.text = $"Bullets Left: {clip.ToString()}";
             audioSource.Play();
             shoot(); // bullet logic
+            //qol
+            if(clip == 0) forceReload = true;
         }
     }
 
@@ -56,13 +68,16 @@ public class WeaponController : MonoBehaviour
             if(reloadFinished){
                 isReloading = false;
                 clip = maxClip;
+                clipText.text = $"Bullets Left: {clip.ToString()}";
+                reloadingUI.SetActive(false);
+                forceReload = false;
             }
             return;
         }
-
+        //start reloading
         bool reloadKey = Input.GetButton("Reload");
-        Debug.Log(reloadKey);
-        if(reloadKey){
+        if(reloadKey || forceReload){
+            reloadingUI.SetActive(true);
             isReloading = true;
             startedReloadAt = Time.time;
         }
@@ -76,7 +91,12 @@ public class WeaponController : MonoBehaviour
             Target target = hit.transform.gameObject.GetComponent<Target>();
             if(target == null)
                 return;
-            target.hit();
+                
+            bool targetHit = target.hit();
+            if(targetHit) {
+                targetsHit += 1;
+                targetsHitText.text = $"Targets Hit: {targetsHit.ToString()}";
+            }
         }
     }
 }
